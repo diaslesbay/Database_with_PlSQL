@@ -1,0 +1,79 @@
+1)Procedure with group by
+CREATE OR REPLACE PROCEDURE GroupBooksByPublication_Date IS
+   publication_date Date;
+   num_books INTEGER;
+BEGIN
+   FOR r IN (
+      SELECT Publication_Date, COUNT(*) AS NumBooks
+      FROM Books
+      GROUP BY Publication_Date
+   ) LOOP
+      publication_date := r.Publication_Date;
+      num_books := r.NumBooks;
+      DBMS_OUTPUT.PUT_LINE('Publication Date: '  publication_date  ', Number of Books: ' || num_books);
+   END LOOP;
+END;
+
+
+BEGIN
+   GroupBooksByPublication_Date;
+END;
+
+
+
+2) Procedure with SQL%ROWCOUNT
+CREATE OR REPLACE PROCEDURE UpdateBookPrice(BookID IN Number, NewPrice IN NUmber) AS
+   v_count NUMBER;
+BEGIN
+   UPDATE Books
+   SET book_Price = NewPrice
+   WHERE Book_ID = BookID;
+
+   v_count := SQL%ROWCOUNT;
+   
+   IF v_count = 1 THEN
+      DBMS_OUTPUT.PUT_LINE('Book updated successfully.');
+   ELSE
+      DBMS_OUTPUT.PUT_LINE('Error updating book.');
+   END IF;
+END;
+
+
+
+BEGIN
+   UpdateBookPrice(102, 900000);
+END;
+
+
+select * from books where book_id = 102
+
+3) Procedure with EXCEPTION
+CREATE OR REPLACE PROCEDURE SearchBook(title IN VARCHAR2) IS
+   searchError exception;
+   price number;
+   pub_date date;
+BEGIN
+   IF LENGTH(title) < 5 THEN
+      RAISE searchError;
+    Else
+        select book_price, publication_date into price, pub_date 
+        from books
+        where book_title = title;
+
+        dbms_output.put_line(' Title: '  title  ' Price: '  price  ' Publication date: ' || pub_date);
+
+   END IF;
+
+    exception
+        when searchError then
+            dbms_output.put_line('The length of book would be greater than 5 characters');
+        when others then
+            dbms_output.put_line('Ондай кітап жоқ!');
+   
+END;
+
+
+
+begin 
+    SearchBook('ыгтгрытргфап');
+end;

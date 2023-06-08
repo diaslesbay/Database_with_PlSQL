@@ -1,0 +1,80 @@
+-- Books Table !!
+CREATE TABLE Books (
+   Book_ID INT NOT NULL,
+   Book_Title VARCHAR2(255) NOT NULL,
+   Publication_Date DATE,
+   Book_Price INT NOT NULL,
+   Publisher_ID INT NOT NULL,
+   CONSTRAINT PK_Books PRIMARY KEY (Book_ID),
+   CONSTRAINT FK_Books_Publisher FOREIGN KEY (Publisher_ID) REFERENCES Publishers(Publisher_ID)
+);
+ 
+-- Authors Table !!
+CREATE TABLE Authors (
+   Author_ID INT NOT NULL,
+   Author_Name VARCHAR2(255) NOT NULL,
+   CONSTRAINT PK_Authors PRIMARY KEY (Author_ID)
+);
+
+-- Book Authors Table !!
+CREATE TABLE BookAuthors (
+   Book_ID INT NOT NULL,
+   Author_ID INT NOT NULL,
+   CONSTRAINT PK_BookAuthors PRIMARY KEY (Book_ID, Author_ID),
+   CONSTRAINT FK_BookAuthors_Book FOREIGN KEY (Book_ID) REFERENCES Books(Book_ID),
+   CONSTRAINT FK_BookAuthors_Author FOREIGN KEY (Author_ID) REFERENCES Authors(Author_ID)
+);
+
+-- Publishers Table!!
+CREATE TABLE Publishers (
+   Publisher_ID INT NOT NULL,
+   Publisher_Name VARCHAR2(255) NOT NULL,
+   CONSTRAINT PK_Publishers PRIMARY KEY (Publisher_ID)
+);
+
+-- Categories Table !!
+CREATE TABLE Categories (
+   Category_ID INT NOT NULL,
+   Category_Name VARCHAR2(255) NOT NULL,
+   CONSTRAINT PK_Categories PRIMARY KEY (Category_ID)
+);
+
+-- Book Categories Table !!
+CREATE TABLE BookCategories (
+   Book_ID INT NOT NULL,
+   Category_ID INT NOT NULL,
+   CONSTRAINT PK_BookCategories PRIMARY KEY (Book_ID, Category_ID),
+   CONSTRAINT FK_BookCategories_Book FOREIGN KEY (Book_ID) REFERENCES Books(Book_ID),
+   CONSTRAINT FK_BookCategories_Category FOREIGN KEY (Category_ID) REFERENCES Categories(Category_ID)
+);
+
+-- Orders Table !!
+CREATE TABLE Orders (
+   Order_ID INT NOT NULL,
+   Customer_ID INT NOT NULL,
+   Order_Date DATE NOT NULL,
+   Total INT NOT NULL,
+   CONSTRAINT PK_Orders PRIMARY KEY (Order_ID),
+   CONSTRAINT FK_Orders_Customer FOREIGN KEY (Customer_ID) REFERENCES Customers(Customer_ID)
+);
+
+-- Order Items Table !!
+CREATE TABLE OrderItems (
+   Order_Item_ID INT NOT NULL,
+   Order_ID INT NOT NULL,
+   Book_ID INT NOT NULL,
+   Quantity INT NOT NULL,
+   CONSTRAINT PK_OrderItems PRIMARY KEY (Order_Item_ID),
+   CONSTRAINT FK_OrderItems_Order FOREIGN KEY (Order_ID) REFERENCES Orders(Order_ID),
+   CONSTRAINT FK_OrderItems_Book FOREIGN KEY (Book_ID) REFERENCES Books(Book_ID)
+);
+
+-- Customers Table !!
+CREATE TABLE Customers (
+   Customer_ID INT NOT NULL,
+   FirstName VARCHAR2(255) NOT NULL,
+   LastName VARCHAR2(255) NOT NULL,
+   Email VARCHAR2(255) NOT NULL,
+   City VARCHAR2(255),
+   CONSTRAINT PK_Customers PRIMARY KEY (Customer_ID)
+);

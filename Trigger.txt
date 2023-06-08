@@ -1,0 +1,12 @@
+CREATE  TRIGGER CounterBooks
+BEFORE INSERT ON Books
+FOR EACH ROW
+DECLARE
+   count INTEGER;
+BEGIN
+   SELECT COUNT(*) INTO count FROM Books;
+   DBMS_OUTPUT.PUT_LINE('Кітаптар саны: ' || count);
+END;
+
+
+insert into Books(Book_id, BOOK_TITLE, PUBLICATION_DATE, BOOK_PRICE, PUBLISHER_ID) values(202, 'Дәукенді қуған Аяжан', '03/03/2008', 200000, 17);

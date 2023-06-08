@@ -1,0 +1,15 @@
+CREATE OR REPLACE FUNCTION GetNumBooks RETURN INTEGER IS
+   NumBooks INTEGER;
+BEGIN
+   SELECT COUNT(*) INTO NumBooks
+   FROM Books;
+   RETURN NumBooks;
+END;
+
+
+DECLARE
+   num_records INteger;
+BEGIN
+   num_records := GetNumBooks();
+   dbms_output.put_line('Number of records: ' || num_records);
+END;
